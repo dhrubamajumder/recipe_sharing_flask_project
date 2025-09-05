@@ -1,0 +1,45 @@
+{% extends "index.html" %}
+
+{% block content %}
+
+<form method="POST" enctype="multipart/form-data">
+    {{ form.hidden_tag() }}
+    <div class="row justify-content-center mt-5 pt-5">
+        <div class="col-sm-4">
+            <div class="card shadow-lg p-5 m-2">
+                <h2>Edit Recipe</h2>
+                
+                <div class="contex mb-3">
+                    <label for="title" class="form-label">Title : </label>
+                    <input type="text" class="form-control" id="title" name="title" value="{{ recipe.title }}" required>
+                </div>
+                
+                <div class="contex mb-3">
+                    <label for="ingredients" class="form-label">Ingredients : </label>
+                    <input type="text" class="form-control" id="ingredients" name="ingredients" value="{{ recipe.ingredients }}" required>
+                </div>
+
+                <div class="contex mb-3">
+                    <label for="steps" class="form-label">Steps : </label>
+                    <input type="text" class="form-control" id="steps" name="steps" value="{{ recipe.steps }}" required>
+                </div>
+
+                <div class="contex mb-3">
+                    <label for="image" class="form-label">Image : </label>
+                    <input type="file" class="form-control" id="image" name="image">
+                    {% if recipe.image %}
+                        <small class="text-muted">Current Image: {{ recipe.image }}</small><br>
+                        <img src="{{ url_for('static', filename='uploads/' ~ recipe.image) }}" class="img-fluid rounded mt-2" style="max-width: 150px;">
+                    {% endif %}
+                </div>
+
+                <div>
+                    <button type="submit" class="btn btn-primary">Update</button>
+                    <a href="{{ url_for('recipe_detail', recipe_id=recipe.id) }}" class="btn btn-secondary">Cancel</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+{% endblock %}

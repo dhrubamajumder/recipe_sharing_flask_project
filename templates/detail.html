@@ -1,0 +1,79 @@
+    {% extends "index.html" %}
+
+    {% block content %}
+    <div class="container mt-3 mb-5 pt-5">
+        <div class="row">
+            <div class="col-md-6">
+                <a href="{{ url_for('home') }}" class="btn btn-dark mt-3 mb-3">← Back to Recipes</a>
+                {% if recipe.image %}
+                    <img src="{{ url_for('static', filename='uploads/' ~ recipe.image) }}" class="img-fluid rounded shadow" style="height: 30rem; width: 30rem;" alt="{{ recipe.title }}">
+                {% else %}
+                    <img src="https://via.placeholder.com/600x400" class="img-fluid rounded shadow" alt="No Image">
+                {% endif %}
+            </div>
+            
+            <div class="col-md-6">
+                <h2>{{ recipe.title }}</h2><hr>
+
+                <p><strong style="color: rgb(212, 95, 11);">Posted by:</strong> {{ recipe.author.username }}</p>
+                
+                {% if recipe.created_at %}
+                    <p><strong>Posted on:</strong> {{ recipe.created_at.strftime('%B %d, %Y') }}</p>
+                {% endif %}
+
+                <hr>
+
+                <h5 style="color: rgb(15, 119, 238);">Ingredients:</h5>
+                <p>{{ recipe.ingredients }}</p>
+
+                <h5 style="color: rgb(7, 125, 244);">Steps:</h5>
+                <p>{{ recipe.steps }}</p>
+
+                <!-------------  Recipe Update button -------- -->
+                {% if current_user.is_authenticated %}
+                    <a href="{{ url_for('edit_recipe', recipe_id=recipe.id) }}" class="btn btn-primary mt-3 mb-3"> Update</a><br>
+                    <form action="{{ url_for('delete_recipe', recipe_id=recipe.id) }}" method="POST" onclick="return confirm('Are you sure you want to delete this recipe?');">
+                        <button type="submit" class="btn btn-danger mt-2">Delete</button>
+                    </form>
+                {% endif %}
+            <!----------------   Comment session   ------------------>
+                <h2>Comments</h2>
+                {% if current_user.is_authenticated %}
+                <form method="POST">
+                    {{ form.hidden_tag() }}
+                    <div class="mb-3">
+                        {{ form.content.label }}
+                        {{ form.content(class="form-control") }}
+                    </div>
+                    {{ form.submit(class="btn btn-primary") }}
+                </form>
+               
+                <hr>
+                <!---------- Comments view ---------->
+                {% for comments in comment %}
+                <div class="card mb-2 p-2 shadow-sm">
+                    <p>{{ comments.content }}</p>
+                    <small>User : {{ comments.author.username }} on {{ comments.timestamp.strftime("%Y-%m-%d %I:%M") }}</small>
+
+                </div>
+                {% else %}
+                <p>No comments yet. Be the first to comment.</p>
+                {% endfor %}
+
+                {% else %}
+                {% for comments in comment %}
+                <div class="card mb-2 p-2 shadow-sm">
+                    <p>{{ comments.content }}</p>
+                    <small>User : {{ comments.author.username }} on {{ comments.timestamp.strftime("%Y-%m-%d %I:%M") }}</small>
+
+                </div>
+                {% else %}
+                <p>No comments yet. Be the first to comment.</p>
+                {% endfor %}
+                {% endif %}
+                
+            </div>
+        </div>
+    </div>
+    
+    {% endblock %}

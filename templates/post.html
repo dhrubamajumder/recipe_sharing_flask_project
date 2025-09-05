@@ -1,0 +1,40 @@
+{% extends "index.html" %}
+
+{% block content %}
+
+<form method="POST" enctype="multipart/form-data">
+    {{ form.hidden_tag() }}
+    <div class="row justify-content-center mt-4 pt-5">
+        <div class="col-sm-6 col-md-6 col-lg-5">
+            <div class="card shadow-lg p-5 m-2">
+                <h2>Post a New Recipe</h2>
+                <div class="contex">
+                    <label for="title" class="form-label">Title : </label>
+                    <input type="text" class="form-control" id="title" name="title" required>
+                </div>
+                
+                <div class="contex">
+                    <label for="ingredients" class="form-label">Ingredients : </label>
+                    <input type="text" class="form-control" id="ingredients" name="ingredients" required>
+                </div>
+
+                <div class="contex">
+                    <label for="steps" class="form-label">Steps : </label>
+                    <input type="text" class="form-control" id="steps" name="steps" required>
+                </div>
+
+                <div class="contex">
+                    <label for="image" class="form-label">Steps : </label>
+                    <input type="file" class="form-control" id="image" name="image" required>
+                </div><br>
+                <div>
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                    <a href="{{ url_for('home')}}" class="btn btn-dark">Cancel</a>
+                </div>
+                
+            </div>
+        </div>
+    </div>
+    
+</form>
+{% endblock %}

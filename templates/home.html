@@ -1,0 +1,40 @@
+{% extends "index.html" %}
+{% block content %}
+
+
+{% if not request.args.get('search') %}
+    {% include "extra.html" %}
+{% endif %}
+
+<h2 class="text-center mt-2">Recipe Post</h2>
+<hr>
+<div class="container mt-4 pt-5">
+    <div class="row">
+        {% for recipe in recipes %}
+            <div class="col-md-6 col-lg-4 mb-3">
+                <div class="card">
+                    <div class="card-body shadow-lg">
+                        {% if recipe.image %}
+                        <img src="{{ url_for('static', filename='uploads/' ~ recipe.image) }}" style="width: 55vh; height: 35vh;" class="card-img-bottom img-fluid justify-content-center">
+                        {% endif %}
+                        <h2 class="card-title mt-2">{{ recipe.title }}</h2>
+
+                        <div class="d-flex justify-content-between">
+                            <a href="{{ url_for('recipe_detail', recipe_id=recipe.id)}}" class="btn btn-success">View</a>
+                            <form action="{{ url_for('like_recipe', recipe_id=recipe.id) }}" method="post" style="display:inline;">
+                                <button type="submit" class="btn btn-outline-danger">
+                                    ❤️ {{ recipe.liked_by|length }}
+                                </button>
+                            </form>
+                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% else %}
+            <p>No data search found.</p>
+        {% endfor %}
+    </div>
+</div>
+
+{% endblock %}
